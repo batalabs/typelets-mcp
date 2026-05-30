@@ -1,10 +1,10 @@
 /**
- * get_problem — fetch the full detail for a single library problem.
+ * get_problem: fetch the full detail for a single library problem.
  *
  * In `interviewer` profile, returns prompt + rubric + criteria + visible
  * and hidden tests + solution metadata. In `candidate` profile the
  * rubric, criteria, hidden tests, and solution are stripped before
- * leaving this process — the LLM never sees them. The filtering is in
+ * leaving this process. The LLM never sees them. The filtering is in
  * `profile.ts`; this handler just forwards the result through it.
  */
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';

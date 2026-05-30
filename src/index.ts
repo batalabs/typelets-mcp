@@ -9,7 +9,7 @@
  *   3. Register the Phase 1 read tools and the Phase 2 write tools.
  *   4. Hand off to the MCP SDK's stdio transport loop.
  *
- * Phase 2 write tools are profile-gated at registration time —
+ * Phase 2 write tools are profile-gated at registration time.
  * interviewer-only tools are not registered when TYPELETS_PROFILE=candidate.
  * Phase 3 (session intelligence) lands in a later minor release.
  */

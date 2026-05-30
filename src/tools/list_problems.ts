@@ -1,5 +1,5 @@
 /**
- * list_problems — return library entries the caller can see.
+ * list_problems: return library entries the caller can see.
  *
  * Respects the existing API-side scoping (system library vs. org
  * library) plus the candidate profile when active (the profile gate is

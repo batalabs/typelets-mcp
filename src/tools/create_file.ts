@@ -1,7 +1,7 @@
 /**
- * create_file — create a new file at a path in a workspace.
+ * create_file: create a new file at a path in a workspace.
  *
- * Available to both interviewer and candidate profiles — candidates have
+ * Available to both interviewer and candidate profiles. Candidates have
  * editor role in their own interview workspace and need to create files.
  * Intermediate folders are created automatically; returns the new file id.
  */
@@ -20,7 +20,7 @@ interface CreateFileResponse {
 }
 
 export function registerCreateFile(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('create_file', env.profile)) return;
 
   server.registerTool(

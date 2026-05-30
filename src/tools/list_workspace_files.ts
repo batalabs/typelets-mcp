@@ -1,5 +1,5 @@
 /**
- * list_workspace_files — walk a workspace's tree and return flat paths.
+ * list_workspace_files: walk a workspace's tree and return flat paths.
  *
  * Phase 1 calls the snapshot endpoint `GET /workspaces/:id/files` which
  * the Typelets API exposes specifically for non-Yjs consumers (the

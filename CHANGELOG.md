@@ -4,11 +4,11 @@ All notable changes to `@typelets/mcp` will be documented here. Format follows [
 
 ## [Unreleased]
 
-## [0.2.0] — 2026-05-30
+## [0.2.0] - 2026-05-30
 
 ### Added
 
-- Profile gating at registration time. Interviewer-only tools are no longer registered when `TYPELETS_PROFILE=candidate` — the host LLM never sees them in `listTools`.
+- Profile gating at registration time. Interviewer-only tools are no longer registered when `TYPELETS_PROFILE=candidate`; the host LLM never sees them in `listTools`.
 - Eight write tools:
   - `create_workspace` (interviewer)
   - `apply_problem_to_workspace` (interviewer, destructive)
@@ -27,21 +27,21 @@ All notable changes to `@typelets/mcp` will be documented here. Format follows [
 - `update_file` replaces file contents wholesale. A co-editor currently editing the file via y-websocket will have their cursor snap to position 0; their in-flight edits are NOT preserved. Documented in the tool description.
 - No native undo. Writes are immediate and irreversible from the MCP server's perspective. The Yjs document history exists in the y-websocket server's persistence but is not exposed via API.
 
-## [0.1.0] — 2026-05-30
+## [0.1.0] - 2026-05-30
 
 ### Added
 - Scaffold + spec: README with the phased plan, PAT-based auth design, dual-profile (interviewer / candidate) approach, MIT license, GitHub Actions CI workflow.
-- `src/env.ts` — parses `TYPELETS_TOKEN`, `TYPELETS_API_URL`, `TYPELETS_PROFILE` at start-up.
-- `src/client.ts` — thin fetch wrapper around the Typelets API, with `TypeletsApiError` for non-2xx responses.
-- `src/profile.ts` — strips `rubric`, `criteria`, hidden tests, and `solution` from problem responses when running under the candidate profile.
-- `src/index.ts` — `McpServer` + stdio transport, registers the eight Phase 1 tools.
+- `src/env.ts`: parses `TYPELETS_TOKEN`, `TYPELETS_API_URL`, `TYPELETS_PROFILE` at start-up.
+- `src/client.ts`: thin fetch wrapper around the Typelets API, with `TypeletsApiError` for non-2xx responses.
+- `src/profile.ts`: strips `rubric`, `criteria`, hidden tests, and `solution` from problem responses when running under the candidate profile.
+- `src/index.ts`: `McpServer` + stdio transport, registers the eight Phase 1 tools.
 - Phase 1 tool surface:
   - `list_workspaces`
   - `get_workspace`
   - `list_workspace_files`
   - `read_workspace_file`
   - `list_problems`
-  - `get_problem` — profile-aware
+  - `get_problem` (profile-aware)
   - `list_recordings`
-  - `list_pending_invites` — merges workspace + organisation invitations
-- `tests/profile.test.ts`, `tests/client.test.ts` — node:test suites covering candidate-profile field stripping + fetch wrapper behaviour.
+  - `list_pending_invites` (merges workspace + organisation invitations)
+- `tests/profile.test.ts`, `tests/client.test.ts`: node:test suites covering candidate-profile field stripping + fetch wrapper behaviour.

@@ -1,5 +1,5 @@
 /**
- * list_workspaces — return every workspace the caller can see.
+ * list_workspaces: return every workspace the caller can see.
  *
  * Includes the caller's role per workspace (owner/admin/editor/viewer)
  * so the model can decide whether a follow-up write tool will be

@@ -1,7 +1,7 @@
 /**
- * delete_problem — delete a problem from the library.
+ * delete_problem: delete a problem from the library.
  *
- * Interviewer-only. PERMANENT — the problem is removed from the library.
+ * Interviewer-only. PERMANENT: the problem is removed from the library.
  * Workspaces that previously applied it keep their copy of the prompt,
  * criteria, and files; the deletion only removes the library entry.
  */
@@ -13,7 +13,7 @@ import { toolAllowedForProfile } from '../profile.js';
 import { ok, fail } from './_shared.js';
 
 export function registerDeleteProblem(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('delete_problem', env.profile)) return;
 
   server.registerTool(
@@ -21,7 +21,7 @@ export function registerDeleteProblem(server: McpServer, client: TypeletsClient,
     {
       title: 'Delete a problem from the library',
       description:
-        'Delete a problem from the Typelets library. PERMANENT — the problem is removed and cannot ' +
+        'Delete a problem from the Typelets library. PERMANENT: the problem is removed and cannot ' +
         'be restored. Workspaces that previously applied it keep their copy of the ' +
         'prompt, criteria, and files. ' +
         'Errors: 403 if you are not the author (or not an org admin for shared-library problems); ' +

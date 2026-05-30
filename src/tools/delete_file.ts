@@ -1,5 +1,5 @@
 /**
- * delete_file — remove a file from a workspace.
+ * delete_file: remove a file from a workspace.
  *
  * Available to both interviewer and candidate profiles. Idempotent: if the
  * file id no longer exists in the workspace the server returns 204 without
@@ -14,7 +14,7 @@ import { toolAllowedForProfile } from '../profile.js';
 import { ok, fail } from './_shared.js';
 
 export function registerDeleteFile(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('delete_file', env.profile)) return;
 
   server.registerTool(
@@ -22,7 +22,7 @@ export function registerDeleteFile(server: McpServer, client: TypeletsClient, en
     {
       title: 'Delete a file from a workspace',
       description:
-        'Permanently delete a file from a workspace. This action is idempotent — if the file id no longer exists the operation still succeeds silently. The deletion is immediate and cannot be undone via this tool.',
+        'Permanently delete a file from a workspace. This action is idempotent: if the file id no longer exists the operation still succeeds silently. The deletion is immediate and cannot be undone via this tool.',
       inputSchema: {
         workspaceId: z.string().min(1).describe('The workspace id from list_workspaces.'),
         fileId: z.string().min(1).describe('The file id from list_workspace_files.'),

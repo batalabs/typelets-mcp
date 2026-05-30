@@ -6,7 +6,7 @@ Status: pre-alpha. The spec below is the plan; the server is being built in publ
 
 ## Why
 
-Interviewers spend a lot of meta-work outside the coding window: authoring problems, prepping starter files, reviewing candidate code after the fact, summarizing what happened. Most of that work is "look at structured data, produce structured data" — exactly what an LLM is good at. Wrapping the Typelets API as MCP tools lets the interviewer's AI of choice do that work without the platform itself needing to embed model logic.
+Interviewers spend a lot of meta-work outside the coding window: authoring problems, prepping starter files, reviewing candidate code after the fact, summarizing what happened. Most of that work is "look at structured data, produce structured data," which is exactly what an LLM is good at. Wrapping the Typelets API as MCP tools lets the interviewer's AI of choice do that work without the platform itself needing to embed model logic.
 
 ## Phased plan
 
@@ -20,7 +20,7 @@ Phase 1 is the entire v0.1.0 release. Phase 2 lands in v0.2.x. Phase 3 is v0.3.x
 
 ## How auth works
 
-The server authenticates against the Typelets API using a **Personal Access Token**. Tokens are issued in User Settings -> Tokens on https://typelets.com, are scoped per-user, and carry an expiry plus a label. Tokens never leave the user's machine — the MCP server reads `TYPELETS_TOKEN` from its environment, and the client passes it through.
+The server authenticates against the Typelets API using a **Personal Access Token**. Tokens are issued in User Settings -> Tokens on https://typelets.com, are scoped per-user, and carry an expiry plus a label. Tokens never leave the user's machine. The MCP server reads `TYPELETS_TOKEN` from its environment, and the client passes it through.
 
 Why not OAuth: this is a single-user CLI tool wired into a desktop LLM client. PATs match the audience without dragging in a browser dance every session. An OAuth flow becomes plausible later if a Typelets-hosted MCP gateway makes sense.
 
@@ -32,8 +32,8 @@ The PAT issuance flow is the only prerequisite work on the Typelets side. Everyt
 
 The server ships two profiles:
 
-- **`interviewer`** — default. Has access to rubric content, hidden tests, scores, and the full library.
-- **`candidate`** — strict. Hides rubric / hidden tests / scores even if the user's role would otherwise allow it. Useful when the user wants to point an AI assistant at their own in-progress interview without leaking the answer key into the LLM's context.
+- **`interviewer`** (default): has access to rubric content, hidden tests, scores, and the full library.
+- **`candidate`** (strict): hides rubric / hidden tests / scores even if the user's role would otherwise allow it. Useful when the user wants to point an AI assistant at their own in-progress interview without leaking the answer key into the LLM's context.
 
 The profile is set at start-up, not per-tool:
 
@@ -41,7 +41,7 @@ The profile is set at start-up, not per-tool:
 TYPELETS_PROFILE=candidate npx @typelets/mcp
 ```
 
-Default is `interviewer`. The server refuses to switch profiles at runtime — if you want both, run two server instances on different ports.
+Default is `interviewer`. The server refuses to switch profiles at runtime. If you want both, run two server instances on different ports.
 
 ## Install
 
@@ -67,15 +67,15 @@ In your MCP client's config (Claude Desktop, Cline, Cursor, etc.):
 }
 ```
 
-Get your token at https://typelets.com — User Settings → Tokens → New token. Give it a label like "Claude Desktop on laptop", pick an expiry, copy the value (you only see it once), and paste it into `TYPELETS_TOKEN`.
+Get your token at https://typelets.com: User Settings → Tokens → New token. Give it a label like "Claude Desktop on laptop", pick an expiry, copy the value (you only see it once), and paste it into `TYPELETS_TOKEN`.
 
 Profiles:
-- `interviewer` (default) — full surface, including rubric and hidden tests.
-- `candidate` — the same tools but rubric, criteria, hidden tests, and solution are stripped before they reach the LLM. Use this when you want an AI assistant helping you on a problem you're solving.
+- `interviewer` (default): full surface, including rubric and hidden tests.
+- `candidate`: the same tools but rubric, criteria, hidden tests, and solution are stripped before they reach the LLM. Use this when you want an AI assistant helping you on a problem you're solving.
 
 ## Tool surface
 
-16 tools total. In `candidate` profile, the 5 interviewer-only tools are not registered — the candidate's host LLM does not see them in `listTools`.
+16 tools total. In `candidate` profile, the 5 interviewer-only tools are not registered; the candidate's host LLM does not see them in `listTools`.
 
 ### Reads (8 tools, both profiles)
 
@@ -90,21 +90,21 @@ Profiles:
 | `list_recordings` | `GET /workspaces/:id/recordings` | Metadata only. |
 | `list_pending_invites` | `GET /invites` + `GET /invitations` | Merged workspace + org invites. |
 
-### Writes — file CRUD (3 tools, both profiles)
+### Writes: file CRUD (3 tools, both profiles)
 
 | Tool | Writes | `destructive` |
 | --- | --- | --- |
-| `create_file` | `POST /workspaces/:id/files` | — |
+| `create_file` | `POST /workspaces/:id/files` | |
 | `update_file` | `PUT /workspaces/:id/files/:fileId/content` | ✓ |
 | `delete_file` | `DELETE /workspaces/:id/files/:fileId` | ✓ |
 
-### Writes — authoring (5 tools, interviewer profile only)
+### Writes: authoring (5 tools, interviewer profile only)
 
 | Tool | Writes | `destructive` |
 | --- | --- | --- |
-| `create_workspace` | `POST /workspaces` | — |
+| `create_workspace` | `POST /workspaces` | |
 | `apply_problem_to_workspace` | `POST /workspaces/:id/interview/problem` | ✓ |
-| `save_problem_to_library` | `POST /problems` | — |
+| `save_problem_to_library` | `POST /problems` | |
 | `edit_problem` | `PATCH /problems/:id` | ✓ |
 | `delete_problem` | `DELETE /problems/:id` | ✓ |
 

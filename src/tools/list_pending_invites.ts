@@ -1,5 +1,5 @@
 /**
- * list_pending_invites — return invitations addressed to the caller.
+ * list_pending_invites: return invitations addressed to the caller.
  *
  * Returns both workspace-level and organization-level invites in the
  * same response so the LLM can answer "what's waiting for me?" with a

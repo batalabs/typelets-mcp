@@ -5,7 +5,7 @@
  * if their auth token would let them: hidden tests, rubric content,
  * scores, solution files. The `interviewer` profile is a pass-through.
  *
- * The point is defense in depth — the API already enforces these
+ * The point is defense in depth. The API already enforces these
  * boundaries on a per-role basis, but the candidate profile is a
  * second gate the user opts into when they don't want their AI
  * assistant ingesting answer-key content along with the prompt.
@@ -37,7 +37,7 @@ export interface ProblemDetailLike {
  * try to invoke them.
  *
  * Per-file CRUD (create_file, update_file, delete_file) is allowed for
- * candidates — they have editor role inside their own interview
+ * candidates: they have editor role inside their own interview
  * workspace and need to be able to modify their files.
  */
 export const INTERVIEWER_ONLY_TOOLS: ReadonlySet<string> = new Set([

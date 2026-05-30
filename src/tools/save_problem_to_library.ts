@@ -1,5 +1,5 @@
 /**
- * save_problem_to_library — create a new problem in the library.
+ * save_problem_to_library: create a new problem in the library.
  *
  * Interviewer-only. The caller becomes the problem's owner and is the
  * only one who can later edit or delete it (org admins of the owning
@@ -77,7 +77,7 @@ const categoryEnum = z.enum([
 ]);
 
 export function registerSaveProblemToLibrary(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('save_problem_to_library', env.profile)) return;
 
   server.registerTool(
@@ -95,7 +95,7 @@ export function registerSaveProblemToLibrary(server: McpServer, client: Typelets
         prompt: z.string().min(1).max(20000).describe('The problem statement shown to candidates. Markdown supported.'),
         rubric: z.string().max(20000).nullable().optional().describe('Interviewer-only scoring rubric. Not visible to candidates. Markdown supported.'),
         criteria: z.array(criterionSchema).max(20).default([]).describe('Structured scoring criteria (name + description pairs). Up to 20.'),
-        tests: z.array(testCaseSchema).max(40).default([]).describe('Test cases — either stdin/expectedStdout or framework-exec. Up to 40.'),
+        tests: z.array(testCaseSchema).max(40).default([]).describe('Test cases: either stdin/expectedStdout or framework-exec. Up to 40.'),
         starters: z.record(z.string(), z.string()).default({}).describe('Legacy single-file starter map (filename → content). Prefer starterFiles for new problems.'),
         starterFiles: z.array(problemFileSchema).max(5000).default([]).describe('Starter file tree materialized into the workspace when the problem is applied. Up to 5000 files.'),
         solutionFiles: z.array(problemFileSchema).max(5000).default([]).describe('Reference solution files (interviewer-only, never shown to candidates). Up to 5000 files.'),

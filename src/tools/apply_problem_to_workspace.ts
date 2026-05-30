@@ -1,9 +1,9 @@
 /**
- * apply_problem_to_workspace — apply a library problem to an interview workspace.
+ * apply_problem_to_workspace: apply a library problem to an interview workspace.
  *
  * Interviewer-only. Materializes the problem's starter + test files into the
  * workspace tree, sets the interview prompt/rubric/criteria/tests on the
- * workspace, and REPLACES any previously applied files. This is destructive —
+ * workspace, and REPLACES any previously applied files. This is destructive.
  * a co-editor's in-progress work may be clobbered.
  */
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
@@ -25,7 +25,7 @@ interface ApplyProblemResponse {
 }
 
 export function registerApplyProblemToWorkspace(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('apply_problem_to_workspace', env.profile)) return;
 
   server.registerTool(
@@ -35,9 +35,9 @@ export function registerApplyProblemToWorkspace(server: McpServer, client: Typel
       description:
         'Apply a library problem to an interview workspace. Materializes the problem\'s starter files ' +
         'and test files into the workspace tree and copies the prompt, rubric, criteria, and test cases ' +
-        'onto the workspace. Existing candidate work in the workspace is REPLACED — any previously ' +
+        'onto the workspace. Existing candidate work in the workspace is REPLACED: any previously ' +
         'applied starter files are removed and the new ones are written in a single atomic pass. ' +
-        'Destructive — confirm before invoking. Errors: 404 if the workspace or problem is not found; ' +
+        'Destructive. Confirm before invoking. Errors: 404 if the workspace or problem is not found; ' +
         '403 if the caller is not owner/admin/interviewer of the workspace.',
       inputSchema: {
         workspaceId: z.string().min(1).describe('The workspace id from list_workspaces or create_workspace. Typically an interview-mode workspace. The API does not enforce this, but applying to a general workspace populates interview fields that the general-mode UI does not surface.'),

@@ -1,5 +1,5 @@
 /**
- * create_workspace — create a new Typelets workspace.
+ * create_workspace: create a new Typelets workspace.
  *
  * Interviewer-only. Candidates never see this tool in listTools.
  * Returns the new workspace object including its id, which the
@@ -24,7 +24,7 @@ interface CreateWorkspaceResponse {
 }
 
 export function registerCreateWorkspace(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('create_workspace', env.profile)) return;
 
   server.registerTool(

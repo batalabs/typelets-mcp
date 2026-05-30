@@ -1,7 +1,7 @@
 /**
- * edit_problem — edit an existing library problem.
+ * edit_problem: edit an existing library problem.
  *
- * Interviewer-only. All fields are optional — send only the ones you
+ * Interviewer-only. All fields are optional. Send only the ones you
  * want to change. Workspaces that previously applied the problem keep
  * their copy of the prompt/criteria/files; changes only affect future applies.
  */
@@ -77,7 +77,7 @@ const categoryEnum = z.enum([
 ]);
 
 export function registerEditProblem(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('edit_problem', env.profile)) return;
 
   server.registerTool(
@@ -85,10 +85,10 @@ export function registerEditProblem(server: McpServer, client: TypeletsClient, e
     {
       title: 'Edit an existing library problem',
       description:
-        'Edit an existing problem in the Typelets library. All fields are optional — only the fields ' +
+        'Edit an existing problem in the Typelets library. All fields are optional. Only the fields ' +
         'you provide are updated. Workspaces that previously applied this problem keep their copy of the ' +
         'prompt, criteria, and files; edits here only affect future apply_problem_to_workspace calls. ' +
-        'Destructive — changes to the library entry are immediate and cannot be undone via this tool. ' +
+        'Destructive. Changes to the library entry are immediate and cannot be undone via this tool. ' +
         'Errors: 400 if no fields are provided; 403 if you are not the author (or not an org admin ' +
         'for shared-library problems); 404 if the problem is not found.',
       inputSchema: {

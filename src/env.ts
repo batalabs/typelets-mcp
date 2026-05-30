@@ -2,7 +2,7 @@
  * Configuration the server reads from its process environment at start-up.
  * The MCP server is invoked by a client (Claude Desktop, Cline, etc.) which
  * supplies these via the client's mcpServers config, not by the user
- * directly — so a missing or malformed value should surface as a clear
+ * directly, so a missing or malformed value should surface as a clear
  * stderr message before any tool registration happens.
  */
 import { z } from 'zod';

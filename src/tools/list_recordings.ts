@@ -1,5 +1,5 @@
 /**
- * list_recordings — return the recordings made in a workspace.
+ * list_recordings: return the recordings made in a workspace.
  *
  * Metadata only: id, label, createdAt, durationMs, and the count of
  * captured events. The actual event-stream blob endpoint stays out of
@@ -34,7 +34,7 @@ export function registerListRecordings(
     {
       title: 'List session recordings',
       description:
-        "Return every saved session recording for a workspace, metadata only. The recordings themselves stay out of the Phase 1 surface — call out to the platform to replay them.",
+        "Return every saved session recording for a workspace, metadata only. The recordings themselves stay out of the Phase 1 surface. Call out to the platform to replay them.",
       inputSchema: {
         workspaceId: z.string().min(1).describe('The workspace id.'),
       },

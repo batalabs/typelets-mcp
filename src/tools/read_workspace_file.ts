@@ -1,5 +1,5 @@
 /**
- * read_workspace_file — return the contents of a single workspace file.
+ * read_workspace_file: return the contents of a single workspace file.
  *
  * Backed by `GET /workspaces/:id/files/:fileId/content`. The Typelets
  * API returns the materialised UTF-8 content of the file at HEAD;

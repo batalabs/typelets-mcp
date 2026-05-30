@@ -4,7 +4,7 @@
  * The defense-in-depth promise here is "an LLM in candidate profile
  * never sees rubric / criteria / hidden tests / solution, regardless
  * of what the API returned." That's worth a real test rather than an
- * eyeball check — the field set will grow over time.
+ * eyeball check. The field set will grow over time.
  */
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';

@@ -1,8 +1,8 @@
 /**
- * update_file — replace the entire contents of an existing workspace file.
+ * update_file: replace the entire contents of an existing workspace file.
  *
  * Available to both interviewer and candidate profiles. Marked destructive
- * because the overwrite is irreversible from the MCP server's perspective —
+ * because the overwrite is irreversible from the MCP server's perspective.
  * a co-editor currently open on the file sees the change live and their
  * cursor position may be displaced.
  */
@@ -20,7 +20,7 @@ interface UpdateFileResponse {
 }
 
 export function registerUpdateFile(server: McpServer, client: TypeletsClient, env: Env): void {
-  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
+  // Profile gate: keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('update_file', env.profile)) return;
 
   server.registerTool(
@@ -28,11 +28,11 @@ export function registerUpdateFile(server: McpServer, client: TypeletsClient, en
     {
       title: "Replace a file's contents",
       description:
-        "Replace the entire contents of a file with new UTF-8 text. Use create_file if the file does not exist yet. This overwrites wholesale — any co-editor currently editing the file sees the change live and their cursor may move; their in-flight edits are NOT preserved. Returns the new byte count. Errors: 404 if the fileId does not exist in the workspace; 413 if content exceeds 1 MiB.",
+        "Replace the entire contents of a file with new UTF-8 text. Use create_file if the file does not exist yet. This overwrites wholesale: any co-editor currently editing the file sees the change live and their cursor may move; their in-flight edits are NOT preserved. Returns the new byte count. Errors: 404 if the fileId does not exist in the workspace; 413 if content exceeds 1 MiB.",
       inputSchema: {
         workspaceId: z.string().min(1).describe('The workspace id from list_workspaces.'),
         fileId: z.string().min(1).describe('The file id from list_workspace_files.'),
-        content: z.string().describe('Replacement UTF-8 content. Wholesale overwrite — no diff/patch semantics.'),
+        content: z.string().describe('Replacement UTF-8 content. Wholesale overwrite; no diff/patch semantics.'),
       },
       annotations: { destructiveHint: true },
     },

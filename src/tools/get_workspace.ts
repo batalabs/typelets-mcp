@@ -1,5 +1,5 @@
 /**
- * get_workspace — fetch the full summary for a single workspace.
+ * get_workspace: fetch the full summary for a single workspace.
  *
  * Returns the applied problem id (when any), preview configuration,
  * and the candidate / interviewer membership state. Combine with
