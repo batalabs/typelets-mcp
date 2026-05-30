@@ -73,22 +73,42 @@ Profiles:
 - `interviewer` (default) — full surface, including rubric and hidden tests.
 - `candidate` — the same tools but rubric, criteria, hidden tests, and solution are stripped before they reach the LLM. Use this when you want an AI assistant helping you on a problem you're solving.
 
-## Phase 1 tool surface
+## Tool surface
 
-The intended tools for v0.1.0 — names and arguments are still subject to change while the SDK shape settles.
+16 tools total. In `candidate` profile, the 5 interviewer-only tools are not registered — the candidate's host LLM does not see them in `listTools`.
+
+### Reads (8 tools, both profiles)
 
 | Tool | Reads | Notes |
 | --- | --- | --- |
-| `list_workspaces` | `GET /workspaces` | Returns the caller's workspaces, with role and mode. |
-| `get_workspace` | `GET /workspaces/:id` | Full summary, including share scope and applied problem id. |
-| `list_workspace_files` | tree snapshot | Walks the workspace tree and returns paths + ids. |
-| `read_workspace_file` | file snapshot | Returns the file contents at HEAD. UTF-8 only. |
-| `list_problems` | `GET /problems` | Library entries the caller can see. Respects profile. |
-| `get_problem` | `GET /problems/:id` | Prompt + criteria. Rubric / tests only in interviewer profile. |
-| `list_recordings` | `GET /workspaces/:id/recordings` | Metadata only; the actual blob endpoints stay out of scope for v0.1.0. |
-| `list_pending_invites` | `GET /invites` | The caller's pending workspace + org invites. |
+| `list_workspaces` | `GET /workspaces` | Caller's workspaces, with role + mode. |
+| `get_workspace` | `GET /workspaces/:id` | Full summary, share scope, applied problem id. |
+| `list_workspace_files` | `GET /workspaces/:id/files` | Flat list of file ids + slash-separated paths. |
+| `read_workspace_file` | `GET /workspaces/:id/files/:fileId/content` | UTF-8 content at HEAD; 1 MiB cap with `truncated` flag. |
+| `list_problems` | `GET /problems` | Library entries the caller can see. |
+| `get_problem` | `GET /problems/:id` | Prompt + criteria. Rubric / hidden tests stripped in candidate profile. |
+| `list_recordings` | `GET /workspaces/:id/recordings` | Metadata only. |
+| `list_pending_invites` | `GET /invites` + `GET /invitations` | Merged workspace + org invites. |
 
-Each tool returns structured JSON for the model and a short prose summary for the human reading the chat transcript.
+### Writes — file CRUD (3 tools, both profiles)
+
+| Tool | Writes | `destructive` |
+| --- | --- | --- |
+| `create_file` | `POST /workspaces/:id/files` | — |
+| `update_file` | `PUT /workspaces/:id/files/:fileId/content` | ✓ |
+| `delete_file` | `DELETE /workspaces/:id/files/:fileId` | ✓ |
+
+### Writes — authoring (5 tools, interviewer profile only)
+
+| Tool | Writes | `destructive` |
+| --- | --- | --- |
+| `create_workspace` | `POST /workspaces` | — |
+| `apply_problem_to_workspace` | `POST /workspaces/:id/interview/problem` | ✓ |
+| `save_problem_to_library` | `POST /problems` | — |
+| `edit_problem` | `PATCH /problems/:id` | ✓ |
+| `delete_problem` | `DELETE /problems/:id` | ✓ |
+
+Tools marked `destructive` carry the MCP `destructiveHint: true` annotation so host clients (Claude Desktop, Cline, Cursor) prompt the user before invocation.
 
 ## Layout
 

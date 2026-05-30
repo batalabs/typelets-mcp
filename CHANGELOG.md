@@ -4,6 +4,29 @@ All notable changes to `@typelets/mcp` will be documented here. Format follows [
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-05-30
+
+### Added
+
+- Profile gating at registration time. Interviewer-only tools are no longer registered when `TYPELETS_PROFILE=candidate` — the host LLM never sees them in `listTools`.
+- Eight write tools:
+  - `create_workspace` (interviewer)
+  - `apply_problem_to_workspace` (interviewer, destructive)
+  - `create_file` (both)
+  - `update_file` (both, destructive)
+  - `delete_file` (both, destructive)
+  - `save_problem_to_library` (interviewer)
+  - `edit_problem` (interviewer, destructive)
+  - `delete_problem` (interviewer, destructive)
+- All destructive tools carry the MCP `destructiveHint: true` annotation so host clients prompt the user before invocation.
+- `fail()` shared helper now surfaces validation `details` from 4xx responses so the LLM can self-correct on schema errors.
+- `TypeletsClient` gains a `put` method for `update_file`.
+
+### Notes
+
+- `update_file` replaces file contents wholesale. A co-editor currently editing the file via y-websocket will have their cursor snap to position 0; their in-flight edits are NOT preserved. Documented in the tool description.
+- No native undo. Writes are immediate and irreversible from the MCP server's perspective. The Yjs document history exists in the y-websocket server's persistence but is not exposed via API.
+
 ## [0.1.0] — 2026-05-30
 
 ### Added
