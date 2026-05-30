@@ -11,7 +11,7 @@
  *
  * Phase 2 write tools are profile-gated at registration time.
  * interviewer-only tools are not registered when TYPELETS_PROFILE=candidate.
- * Phase 3 (session intelligence) lands in a later minor release.
+ * Phase 3 session-intelligence tools are also profile-gated at registration.
  */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
@@ -33,6 +33,9 @@ import { registerApplyProblemToWorkspace } from './tools/apply_problem_to_worksp
 import { registerSaveProblemToLibrary } from './tools/save_problem_to_library.js';
 import { registerEditProblem } from './tools/edit_problem.js';
 import { registerDeleteProblem } from './tools/delete_problem.js';
+import { registerSummarizeRecording } from './tools/summarize_recording.js';
+import { registerScoreAgainstRubric } from './tools/score_against_rubric.js';
+import { registerSuggestFollowupQuestions } from './tools/suggest_followup_questions.js';
 
 async function main(): Promise<void> {
   const env = readEnv();
@@ -71,6 +74,11 @@ async function main(): Promise<void> {
   registerSaveProblemToLibrary(server, client, env);
   registerEditProblem(server, client, env);
   registerDeleteProblem(server, client, env);
+
+  // Phase 3 session-intelligence tools (interviewer-only).
+  registerSummarizeRecording(server, client, env);
+  registerScoreAgainstRubric(server, client, env);
+  registerSuggestFollowupQuestions(server, client, env);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
