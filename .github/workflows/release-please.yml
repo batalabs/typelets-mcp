@@ -52,3 +52,35 @@ jobs:
           for pr in $(gh pr list --label "autorelease: pending" --json number --jq '.[].number'); do
             gh pr merge "$pr" --auto --squash --delete-branch || true
           done
+
+      # When a release PR is merged and a GitHub release is created,
+      # release-please sets release_created=true on this run. Publish the
+      # tagged version to npm. NPM_TOKEN must be an automation or granular
+      # access token with bypass-2fa and write access to the @typelets scope.
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
+
+      - uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      - uses: pnpm/action-setup@v4
+        if: ${{ steps.release.outputs.release_created }}
+        with:
+          version: 10
+
+      - name: Install dependencies
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm run build
+
+      - name: Publish to npm
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
