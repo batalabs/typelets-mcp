@@ -9,20 +9,28 @@
  *   3. Register the Phase 1 read-only tools.
  *   4. Hand off to the MCP SDK's stdio transport loop.
  *
- * The Phase 1 tool surface is read-only on purpose so v0.1.0 ships
- * without needing a confirmation UX. Phase 2 (writes) and Phase 3
- * (session intelligence) land in subsequent minor releases.
+ * Phase 1 is read-only on purpose so v0.1.0 ships without needing a
+ * confirmation UX. Phase 2 (writes) and Phase 3 (session intelligence)
+ * land in later minor releases.
  */
-import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { readEnv } from './env.js';
 import { createClient } from './client.js';
+import { registerListWorkspaces } from './tools/list_workspaces.js';
+import { registerGetWorkspace } from './tools/get_workspace.js';
+import { registerListWorkspaceFiles } from './tools/list_workspace_files.js';
+import { registerReadWorkspaceFile } from './tools/read_workspace_file.js';
+import { registerListProblems } from './tools/list_problems.js';
+import { registerGetProblem } from './tools/get_problem.js';
+import { registerListRecordings } from './tools/list_recordings.js';
+import { registerListPendingInvites } from './tools/list_pending_invites.js';
 
 async function main(): Promise<void> {
   const env = readEnv();
-  const _client = createClient(env);
+  const client = createClient(env);
 
-  const server = new Server(
+  const server = new McpServer(
     {
       name: 'typelets-mcp',
       version: '0.0.1',
@@ -34,19 +42,17 @@ async function main(): Promise<void> {
     },
   );
 
-  // Phase 1 tool registration lands as individual src/tools/*.ts files
-  // each exporting register(server, client, env). Keeping the registration
-  // out of this file means the entry stays small and the tool surface
-  // can grow without re-touching main().
-  // TODO(phase-1): import and call register() for:
-  //   - list_workspaces
-  //   - get_workspace
-  //   - list_workspace_files
-  //   - read_workspace_file
-  //   - list_problems
-  //   - get_problem
-  //   - list_recordings
-  //   - list_pending_invites
+  // Phase 1 read-only tools. Each module owns its own input schema,
+  // description, and handler so adding/removing tools is a single-file
+  // change and the entry stays a flat registration list.
+  registerListWorkspaces(server, client, env);
+  registerGetWorkspace(server, client, env);
+  registerListWorkspaceFiles(server, client, env);
+  registerReadWorkspaceFile(server, client, env);
+  registerListProblems(server, client, env);
+  registerGetProblem(server, client, env);
+  registerListRecordings(server, client, env);
+  registerListPendingInvites(server, client, env);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

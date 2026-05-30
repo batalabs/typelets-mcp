@@ -40,11 +40,12 @@ export function createClient(env: Env): TypeletsClient {
     };
     if (body !== undefined) headers['content-type'] = 'application/json';
 
-    const res = await fetch(url, {
-      method,
-      headers,
-      body: body !== undefined ? JSON.stringify(body) : undefined,
-    });
+    // exactOptionalPropertyTypes refuses an explicit `undefined`; build
+    // the init object incrementally so `body` is only present when we
+    // actually have one.
+    const init: RequestInit = { method, headers };
+    if (body !== undefined) init.body = JSON.stringify(body);
+    const res = await fetch(url, init);
 
     if (res.status === 204) return undefined as T;
 
