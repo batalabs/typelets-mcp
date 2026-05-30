@@ -110,6 +110,16 @@ Profiles:
 
 Tools marked `destructive` carry the MCP `destructiveHint: true` annotation so host clients (Claude Desktop, Cline, Cursor) prompt the user before invocation.
 
+### Session intelligence (3 tools, interviewer profile only)
+
+| Tool | Reads | Input |
+| --- | --- | --- |
+| `summarize_recording` | `GET /workspaces/:id/recordings/:rid/timeline?mode=summary` | `workspaceId`, `recordingId` |
+| `score_against_rubric` | `GET /workspaces/:id/recordings/:rid/timeline?mode=score` | `workspaceId`, `recordingId` |
+| `suggest_followup_questions` | `GET /workspaces/:id/recordings/active/timeline` | `workspaceId` |
+
+Each tool returns a structured timeline (per-file content checkpoints sampled across the session + chronological Run-button events) so the host LLM can write the prose summary, score, or follow-up questions itself. `score_against_rubric` also attaches the workspace's inline rubric + criteria; calls against a workspace with no applied problem return a friendly error pointing the user to `apply_problem_to_workspace`. `suggest_followup_questions` operates on the workspace's currently-active recording (last 5 minutes), and surfaces a clear error if no recording is in progress.
+
 ## Layout
 
 ```
