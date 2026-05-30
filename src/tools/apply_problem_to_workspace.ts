@@ -40,7 +40,7 @@ export function registerApplyProblemToWorkspace(server: McpServer, client: Typel
         'Destructive — confirm before invoking. Errors: 404 if the workspace or problem is not found; ' +
         '403 if the caller is not owner/admin/interviewer of the workspace.',
       inputSchema: {
-        workspaceId: z.string().min(1).describe('The workspace id from list_workspaces or create_workspace. Must be an interview-mode workspace.'),
+        workspaceId: z.string().min(1).describe('The workspace id from list_workspaces or create_workspace. Typically an interview-mode workspace. The API does not enforce this, but applying to a general workspace populates interview fields that the general-mode UI does not surface.'),
         problemId: z.string().min(1).describe('The problem id or slug from list_problems. Accepts either the cuid or the slug.'),
       },
       annotations: { destructiveHint: true },
@@ -52,7 +52,7 @@ export function registerApplyProblemToWorkspace(server: McpServer, client: Typel
           { problemId },
         );
         return ok(
-          `Applied problem to workspace ${workspaceId}.`,
+          `Applied problem ${problemId} to workspace ${workspaceId}.`,
           { workspace: result.workspace },
         );
       } catch (err) {

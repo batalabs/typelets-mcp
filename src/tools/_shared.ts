@@ -44,15 +44,22 @@ export function ok(summary: string, data: unknown): ToolResult {
  *  on it (e.g. 404 -> ask the user for a different id). */
 export function fail(err: unknown): ToolResult {
   if (err instanceof TypeletsApiError) {
+    const bodyDetails =
+      err.body !== null &&
+      typeof err.body === 'object' &&
+      'details' in err.body &&
+      Array.isArray((err.body as Record<string, unknown>).details)
+        ? `\nValidation details: ${JSON.stringify((err.body as Record<string, unknown>).details)}`
+        : '';
     return {
       isError: true,
       content: [
         {
           type: 'text',
-          text: `Typelets API error ${err.status}: ${err.message}`,
+          text: `Typelets API error ${err.status}: ${err.message}${bodyDetails}`,
         },
       ],
-      structuredContent: { error: { status: err.status, message: err.message } },
+      structuredContent: { error: { status: err.status, message: err.message, body: err.body } },
     };
   }
   const message = err instanceof Error ? err.message : String(err);

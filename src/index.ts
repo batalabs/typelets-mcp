@@ -6,12 +6,12 @@
  * On start-up we:
  *   1. Read + validate the env (token, api url, profile).
  *   2. Build a thin API client.
- *   3. Register the Phase 1 read-only tools.
+ *   3. Register the Phase 1 read tools and the Phase 2 write tools.
  *   4. Hand off to the MCP SDK's stdio transport loop.
  *
- * Phase 1 is read-only on purpose so v0.1.0 ships without needing a
- * confirmation UX. Phase 2 (writes) and Phase 3 (session intelligence)
- * land in later minor releases.
+ * Phase 2 write tools are profile-gated at registration time —
+ * interviewer-only tools are not registered when TYPELETS_PROFILE=candidate.
+ * Phase 3 (session intelligence) lands in a later minor release.
  */
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';

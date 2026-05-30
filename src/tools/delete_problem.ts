@@ -22,7 +22,7 @@ export function registerDeleteProblem(server: McpServer, client: TypeletsClient,
       title: 'Delete a problem from the library',
       description:
         'Delete a problem from the Typelets library. PERMANENT — the problem is removed and cannot ' +
-        'be restored via this tool. Workspaces that previously applied it keep their copy of the ' +
+        'be restored. Workspaces that previously applied it keep their copy of the ' +
         'prompt, criteria, and files. ' +
         'Errors: 403 if you are not the author (or not an org admin for shared-library problems); ' +
         '404 if the problem is not found.',
