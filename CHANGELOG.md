@@ -2,6 +2,22 @@
 
 All notable changes to `@typelets/mcp` will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project follows [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0](https://github.com/batalabs/typelets-mcp/compare/mcp-v0.2.0...mcp-v0.3.0) (2026-05-30)
+
+
+### Features
+
+* 5 interviewer-only tools wrapping existing typelets-com endpoints ([b504c60](https://github.com/batalabs/typelets-mcp/commit/b504c60b82af7f86a9ed0072b93147a46a6ea5cd))
+* Phase 1 read-only tool surface (8 tools, profile-aware) ([6ae34e8](https://github.com/batalabs/typelets-mcp/commit/6ae34e8d7a3ef642b8178987ce80db6b3258674b))
+* phase 3 session intelligence tools ([#1](https://github.com/batalabs/typelets-mcp/issues/1)) ([ed4a8c8](https://github.com/batalabs/typelets-mcp/commit/ed4a8c80eff394b886e9c471730057b3aa89b052))
+* profile gating + create_file + update_file + delete_file tools ([5c41950](https://github.com/batalabs/typelets-mcp/commit/5c41950d8fdae60334e2b8276222797723386779))
+
+
+### Bug Fixes
+
+* surface validation details in fail() + description polish ([0479e4e](https://github.com/batalabs/typelets-mcp/commit/0479e4e83f047b4da614cea3216ee3a84f69f3fa))
+* tighten workspaceId/fileId schemas + gate-string comments ([fa07dac](https://github.com/batalabs/typelets-mcp/commit/fa07dacf65b6c371dd193ed3c2317287a464c71e))
+
 ## [Unreleased]
 
 ## [0.2.0] - 2026-05-30
