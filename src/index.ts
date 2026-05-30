@@ -28,6 +28,11 @@ import { registerListPendingInvites } from './tools/list_pending_invites.js';
 import { registerCreateFile } from './tools/create_file.js';
 import { registerUpdateFile } from './tools/update_file.js';
 import { registerDeleteFile } from './tools/delete_file.js';
+import { registerCreateWorkspace } from './tools/create_workspace.js';
+import { registerApplyProblemToWorkspace } from './tools/apply_problem_to_workspace.js';
+import { registerSaveProblemToLibrary } from './tools/save_problem_to_library.js';
+import { registerEditProblem } from './tools/edit_problem.js';
+import { registerDeleteProblem } from './tools/delete_problem.js';
 
 async function main(): Promise<void> {
   const env = readEnv();
@@ -61,6 +66,11 @@ async function main(): Promise<void> {
   registerCreateFile(server, client, env);
   registerUpdateFile(server, client, env);
   registerDeleteFile(server, client, env);
+  registerCreateWorkspace(server, client, env);
+  registerApplyProblemToWorkspace(server, client, env);
+  registerSaveProblemToLibrary(server, client, env);
+  registerEditProblem(server, client, env);
+  registerDeleteProblem(server, client, env);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
