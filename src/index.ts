@@ -25,6 +25,9 @@ import { registerListProblems } from './tools/list_problems.js';
 import { registerGetProblem } from './tools/get_problem.js';
 import { registerListRecordings } from './tools/list_recordings.js';
 import { registerListPendingInvites } from './tools/list_pending_invites.js';
+import { registerCreateFile } from './tools/create_file.js';
+import { registerUpdateFile } from './tools/update_file.js';
+import { registerDeleteFile } from './tools/delete_file.js';
 
 async function main(): Promise<void> {
   const env = readEnv();
@@ -53,6 +56,11 @@ async function main(): Promise<void> {
   registerGetProblem(server, client, env);
   registerListRecordings(server, client, env);
   registerListPendingInvites(server, client, env);
+
+  // Phase 2 write tools (profile-gated inside each register function).
+  registerCreateFile(server, client, env);
+  registerUpdateFile(server, client, env);
+  registerDeleteFile(server, client, env);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

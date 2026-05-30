@@ -23,13 +23,14 @@ export class TypeletsApiError extends Error {
 export interface TypeletsClient {
   get<T>(path: string): Promise<T>;
   post<T>(path: string, body?: unknown): Promise<T>;
+  put<T>(path: string, body?: unknown): Promise<T>;
   patch<T>(path: string, body?: unknown): Promise<T>;
   delete<T>(path: string): Promise<T>;
 }
 
 export function createClient(env: Env): TypeletsClient {
   async function request<T>(
-    method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
+    method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
     path: string,
     body?: unknown,
   ): Promise<T> {
@@ -76,6 +77,7 @@ export function createClient(env: Env): TypeletsClient {
   return {
     get: (path) => request('GET', path),
     post: (path, body) => request('POST', path, body),
+    put: (path, body) => request('PUT', path, body),
     patch: (path, body) => request('PATCH', path, body),
     delete: (path) => request('DELETE', path),
   };

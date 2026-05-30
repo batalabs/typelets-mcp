@@ -30,6 +30,29 @@ export interface ProblemDetailLike {
   solution?: Record<string, unknown>;
 }
 
+/**
+ * Names of tools that the candidate profile MUST NOT register. The
+ * server skips registration for these when `env.profile === 'candidate'`,
+ * so the candidate's host LLM never sees them in `listTools` and cannot
+ * try to invoke them.
+ *
+ * Per-file CRUD (create_file, update_file, delete_file) is allowed for
+ * candidates — they have editor role inside their own interview
+ * workspace and need to be able to modify their files.
+ */
+export const INTERVIEWER_ONLY_TOOLS: ReadonlySet<string> = new Set([
+  'create_workspace',
+  'apply_problem_to_workspace',
+  'save_problem_to_library',
+  'edit_problem',
+  'delete_problem',
+]);
+
+export function toolAllowedForProfile(toolName: string, profile: Env['profile']): boolean {
+  if (profile === 'interviewer') return true;
+  return !INTERVIEWER_ONLY_TOOLS.has(toolName);
+}
+
 export function filterProblemForProfile<T extends ProblemDetailLike>(
   problem: T,
   env: Env,
