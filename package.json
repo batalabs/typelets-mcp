@@ -1,0 +1,51 @@
+{
+  "name": "@typelets/mcp",
+  "version": "0.0.1",
+  "description": "Model Context Protocol server for Typelets — wraps the Typelets API as tools an MCP-capable LLM client can call.",
+  "type": "module",
+  "bin": {
+    "typelets-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test --import tsx tests/**/*.test.ts",
+    "lint": "eslint src tests --max-warnings=0",
+    "prepublishOnly": "pnpm run typecheck && pnpm run build"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "typelets",
+    "interviews",
+    "ai-tools"
+  ],
+  "homepage": "https://github.com/batalabs/typelets-mcp#readme",
+  "bugs": "https://github.com/batalabs/typelets-mcp/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/batalabs/typelets-mcp.git"
+  },
+  "license": "MIT",
+  "author": "Typelets",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "tsx": "^4.0.0",
+    "typescript": "^5.5.0"
+  }
+}
