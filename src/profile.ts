@@ -46,6 +46,9 @@ export const INTERVIEWER_ONLY_TOOLS: ReadonlySet<string> = new Set([
   'save_problem_to_library',
   'edit_problem',
   'delete_problem',
+  'summarize_recording',
+  'score_against_rubric',
+  'suggest_followup_questions',
 ]);
 
 export function toolAllowedForProfile(toolName: string, profile: Env['profile']): boolean {

@@ -8,7 +8,7 @@
  */
 import { describe, it } from 'node:test';
 import { strict as assert } from 'node:assert';
-import { filterProblemForProfile } from '../src/profile.ts';
+import { filterProblemForProfile, toolAllowedForProfile } from '../src/profile.ts';
 import type { Env } from '../src/env.ts';
 
 const FULL = {
@@ -55,5 +55,27 @@ describe('filterProblemForProfile', () => {
     const out = filterProblemForProfile(FULL, env);
     assert.equal(out.prompt, FULL.prompt);
     assert.deepEqual(out.starters, FULL.starters);
+  });
+});
+
+describe('toolAllowedForProfile - Phase 3 tools', () => {
+  it('denies the three recording tools for candidates', () => {
+    for (const t of [
+      'summarize_recording',
+      'score_against_rubric',
+      'suggest_followup_questions',
+    ]) {
+      assert.equal(toolAllowedForProfile(t, 'candidate'), false);
+    }
+  });
+
+  it('allows the three recording tools for interviewers', () => {
+    for (const t of [
+      'summarize_recording',
+      'score_against_rubric',
+      'suggest_followup_questions',
+    ]) {
+      assert.equal(toolAllowedForProfile(t, 'interviewer'), true);
+    }
   });
 });
