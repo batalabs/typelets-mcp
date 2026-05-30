@@ -1,0 +1,54 @@
+# Automated semver releases driven by Conventional Commits.
+#
+# How it works:
+#   1. Every push to main, this workflow scans new commits since the last
+#      release. release-please picks up commits prefixed `feat:` / `fix:` /
+#      `feat!:` (etc.) and computes the next semver bump from them.
+#   2. If there is at least one releasable commit, it opens or updates a
+#      "release PR" that bumps the root package.json version and the
+#      manifest, and prepends a CHANGELOG entry assembled from the commit
+#      messages.
+#   3. Merging that release PR triggers a second run that creates a Git
+#      tag (`v0.3.0`) and a GitHub Release with the changelog body.
+#
+# Commit convention: write commit subjects as `<type>(<scope>?): <subject>`
+# where <type> is one of feat / fix / perf / refactor / docs / test /
+# build / ci / chore / revert. A `!` after the type or a `BREAKING CHANGE:`
+# trailer triggers a major bump.
+
+name: release-please
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          # Manifest-driven config keeps the version in
+          # .release-please-manifest.json so release-please knows where it
+          # left off across runs; the actual config (sections, types) is
+          # in release-please-config.json.
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # Enable auto-merge on any open release-please PR. The PRs contain
+      # nothing but a CHANGELOG entry + version bump - there is nothing
+      # to review. Auto-merge waits for the PR's checks to pass, then
+      # squashes. Idempotent: re-running this on an unchanged PR is a
+      # no-op.
+      - name: Enable auto-merge on the release PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for pr in $(gh pr list --label "autorelease: pending" --json number --jq '.[].number'); do
+            gh pr merge "$pr" --auto --squash --delete-branch || true
+          done
