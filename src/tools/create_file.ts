@@ -20,6 +20,7 @@ interface CreateFileResponse {
 }
 
 export function registerCreateFile(server: McpServer, client: TypeletsClient, env: Env): void {
+  // Profile gate — keep the string in sync with INTERVIEWER_ONLY_TOOLS in ../profile.ts.
   if (!toolAllowedForProfile('create_file', env.profile)) return;
 
   server.registerTool(
@@ -29,7 +30,7 @@ export function registerCreateFile(server: McpServer, client: TypeletsClient, en
       description:
         'Create a new file at a slash-separated path in a workspace. Folders are created as needed. Returns the new file id. Errors: 409 if a file already exists at the path (use update_file instead); 413 if content exceeds 1 MiB.',
       inputSchema: {
-        workspaceId: z.string().describe('The workspace id from list_workspaces.'),
+        workspaceId: z.string().min(1).describe('The workspace id from list_workspaces.'),
         path: z.string().min(1).describe('Slash-separated path from the workspace root (e.g. "src/lib/auth.ts"). Cannot contain ".." segments.'),
         content: z.string().optional().describe('Initial UTF-8 content. Omit to create an empty placeholder file that the y-websocket server will materialise on first open.'),
       },
