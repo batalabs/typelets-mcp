@@ -22,7 +22,3 @@ All notable changes to `@typelets/mcp` will be documented here. Format follows [
   - `list_recordings`
   - `list_pending_invites` — merges workspace + organisation invitations
 - `tests/profile.test.ts`, `tests/client.test.ts` — node:test suites covering candidate-profile field stripping + fetch wrapper behaviour.
-
-### Known limitations
-
-- `list_workspace_files` and `read_workspace_file` depend on `GET /workspaces/:id/files` and `GET /workspaces/:id/files/:fileId/content` endpoints on the Typelets API. These endpoints are not yet implemented; the tools will return a 404 from the API until they land. Tracked for the v0.2.x milestone.
