@@ -43,16 +43,15 @@ TYPELETS_PROFILE=candidate npx @typelets/mcp
 
 Default is `interviewer`. The server refuses to switch profiles at runtime — if you want both, run two server instances on different ports.
 
-## Install (when it ships)
+## Install
 
 ```bash
 npx @typelets/mcp
 ```
 
-Or in your MCP client's config:
+In your MCP client's config (Claude Desktop, Cline, Cursor, etc.):
 
 ```jsonc
-// claude_desktop_config.json (or the equivalent for your client)
 {
   "mcpServers": {
     "typelets": {
@@ -67,6 +66,12 @@ Or in your MCP client's config:
   }
 }
 ```
+
+Get your token at https://typelets.com — User Settings → Tokens → New token. Give it a label like "Claude Desktop on laptop", pick an expiry, copy the value (you only see it once), and paste it into `TYPELETS_TOKEN`.
+
+Profiles:
+- `interviewer` (default) — full surface, including rubric and hidden tests.
+- `candidate` — the same tools but rubric, criteria, hidden tests, and solution are stripped before they reach the LLM. Use this when you want an AI assistant helping you on a problem you're solving.
 
 ## Phase 1 tool surface
 

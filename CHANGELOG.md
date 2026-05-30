@@ -4,6 +4,8 @@ All notable changes to `@typelets/mcp` will be documented here. Format follows [
 
 ## [Unreleased]
 
+## [0.1.0] — 2026-05-30
+
 ### Added
 - Scaffold + spec: README with the phased plan, PAT-based auth design, dual-profile (interviewer / candidate) approach, MIT license, GitHub Actions CI workflow.
 - `src/env.ts` — parses `TYPELETS_TOKEN`, `TYPELETS_API_URL`, `TYPELETS_PROFILE` at start-up.
@@ -21,11 +23,6 @@ All notable changes to `@typelets/mcp` will be documented here. Format follows [
   - `list_pending_invites` — merges workspace + organisation invitations
 - `tests/profile.test.ts`, `tests/client.test.ts` — node:test suites covering candidate-profile field stripping + fetch wrapper behaviour.
 
-### Awaiting Typelets API
+### Known limitations
 
-The following endpoints must land on https://typelets.com before `v0.1.0` can ship:
-
-- Personal Access Token issuance UI + database table (`api_tokens`).
-- Bearer-token auth on every existing route the MCP server calls (`/workspaces`, `/problems`, `/invites`, `/invitations`, etc.).
-- `GET /workspaces/:id/files` — point-in-time materialised tree snapshot used by `list_workspace_files`.
-- `GET /workspaces/:id/files/:fileId/content` — UTF-8 file content used by `read_workspace_file`.
+- `list_workspace_files` and `read_workspace_file` depend on `GET /workspaces/:id/files` and `GET /workspaces/:id/files/:fileId/content` endpoints on the Typelets API. These endpoints are not yet implemented; the tools will return a 404 from the API until they land. Tracked for the v0.2.x milestone.
