@@ -2,6 +2,13 @@
 
 All notable changes to `@typelets/mcp` will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project follows [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0](https://github.com/batalabs/typelets-mcp/compare/mcp-v0.3.0...mcp-v0.4.0) (2026-05-31)
+
+
+### Features
+
+* phase 2.2 completeness tools ([#3](https://github.com/batalabs/typelets-mcp/issues/3)) ([73652e3](https://github.com/batalabs/typelets-mcp/commit/73652e307ced1083d9e5354c22f99717d1de0d60))
+
 ## [0.3.0](https://github.com/batalabs/typelets-mcp/compare/mcp-v0.2.0...mcp-v0.3.0) (2026-05-30)
 
 
