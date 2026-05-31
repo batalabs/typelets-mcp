@@ -120,6 +120,19 @@ Tools marked `destructive` carry the MCP `destructiveHint: true` annotation so h
 
 Each tool returns a structured timeline (per-file content checkpoints sampled across the session + chronological Run-button events) so the host LLM can write the prose summary, score, or follow-up questions itself. `score_against_rubric` also attaches the workspace's inline rubric + criteria; calls against a workspace with no applied problem return a friendly error pointing the user to `apply_problem_to_workspace`. `suggest_followup_questions` operates on the workspace's currently-active recording (last 5 minutes), and surfaces a clear error if no recording is in progress.
 
+### Completeness: file/folder + lifecycle (6 tools)
+
+| Tool | Writes | Profile | `destructive` |
+| --- | --- | --- | --- |
+| `move_path` | `POST /workspaces/:id/move` | both | |
+| `create_folder` | `POST /workspaces/:id/folders` | both | |
+| `delete_folder` | `DELETE /workspaces/:id/folders/:folderId` | both | ✓ |
+| `append_to_file` | `PATCH /workspaces/:id/files/:fileId/append` | both | |
+| `delete_workspace` | `DELETE /workspaces/:id` | interviewer only | ✓ |
+| `whoami` | `GET /auth/me` | both | |
+
+`move_path` renames or moves any node (file or folder) to a full destination path, creating intermediate folders as needed; it rejects moving a folder into its own subtree. `create_folder` makes an empty folder (idempotent). `delete_folder` removes a folder and everything under it. `append_to_file` adds to the end of a file without re-sending its content. `delete_workspace` is interviewer-only and owner-gated by the API. `whoami` reports the identity + profile the server is running as.
+
 ## Layout
 
 ```

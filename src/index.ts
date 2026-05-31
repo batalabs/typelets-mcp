@@ -36,6 +36,12 @@ import { registerDeleteProblem } from './tools/delete_problem.js';
 import { registerSummarizeRecording } from './tools/summarize_recording.js';
 import { registerScoreAgainstRubric } from './tools/score_against_rubric.js';
 import { registerSuggestFollowupQuestions } from './tools/suggest_followup_questions.js';
+import { registerMovePath } from './tools/move_path.js';
+import { registerCreateFolder } from './tools/create_folder.js';
+import { registerDeleteFolder } from './tools/delete_folder.js';
+import { registerAppendToFile } from './tools/append_to_file.js';
+import { registerDeleteWorkspace } from './tools/delete_workspace.js';
+import { registerWhoami } from './tools/whoami.js';
 
 async function main(): Promise<void> {
   const env = readEnv();
@@ -79,6 +85,14 @@ async function main(): Promise<void> {
   registerSummarizeRecording(server, client, env);
   registerScoreAgainstRubric(server, client, env);
   registerSuggestFollowupQuestions(server, client, env);
+
+  // Phase 2.2 completeness tools (delete_workspace is interviewer-only).
+  registerMovePath(server, client, env);
+  registerCreateFolder(server, client, env);
+  registerDeleteFolder(server, client, env);
+  registerAppendToFile(server, client, env);
+  registerDeleteWorkspace(server, client, env);
+  registerWhoami(server, client, env);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);
