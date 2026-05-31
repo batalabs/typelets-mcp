@@ -57,7 +57,7 @@ describe('move_path', () => {
     const t = s.registered.find((r) => r.name === 'move_path');
     assert.ok(t);
     await t!.handler({ workspaceId: 'w1', nodeId: 'n1', destinationPath: 'lib/a.ts' });
-    assert.equal(path, '/workspaces/w1/move');
+    assert.equal(path, '/workspaces/w1/files/move');
     assert.deepEqual(body, { nodeId: 'n1', destinationPath: 'lib/a.ts' });
   });
   it('registered for candidate', () => {

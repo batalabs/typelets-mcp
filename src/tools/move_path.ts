@@ -39,7 +39,7 @@ export function registerMovePath(server: McpServer, client: TypeletsClient, env:
     async ({ workspaceId, nodeId, destinationPath }) => {
       try {
         const out = await client.post<MoveResponse>(
-          `/workspaces/${encodeURIComponent(workspaceId)}/move`,
+          `/workspaces/${encodeURIComponent(workspaceId)}/files/move`,
           { nodeId, destinationPath },
         );
         return ok(`Moved to ${out.path}.`, out);
