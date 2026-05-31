@@ -26,6 +26,15 @@ export interface TypeletsClient {
   put<T>(path: string, body?: unknown): Promise<T>;
   patch<T>(path: string, body?: unknown): Promise<T>;
   delete<T>(path: string): Promise<T>;
+  /** Upload raw bytes (binary file) as an octet-stream body. Separate from
+   *  the JSON helpers above because the body is not JSON and the mime type
+   *  rides an extra header. */
+  uploadBinary<T>(
+    workspaceId: string,
+    filePath: string,
+    bytes: Uint8Array,
+    mimeType: string,
+  ): Promise<T>;
 }
 
 export function createClient(env: Env): TypeletsClient {
@@ -74,11 +83,52 @@ export function createClient(env: Env): TypeletsClient {
     return json as T;
   }
 
+  async function uploadBinary<T>(
+    workspaceId: string,
+    filePath: string,
+    bytes: Uint8Array,
+    mimeType: string,
+  ): Promise<T> {
+    const url =
+      `${env.apiUrl}/workspaces/${encodeURIComponent(workspaceId)}/files/binary` +
+      `?path=${encodeURIComponent(filePath)}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        accept: 'application/json',
+        authorization: `Bearer ${env.token}`,
+        'content-type': 'application/octet-stream',
+        'x-file-mime': mimeType,
+      },
+      body: bytes,
+    });
+    if (res.status === 204) return undefined as T;
+    const text = await res.text();
+    let json: unknown = null;
+    if (text.length > 0) {
+      try {
+        json = JSON.parse(text);
+      } catch {
+        json = text;
+      }
+    }
+    if (!res.ok) {
+      const message =
+        json !== null && typeof json === 'object' && 'error' in json && typeof json.error === 'string'
+          ? json.error
+          : `Typelets API POST /workspaces/${workspaceId}/files/binary failed with ${res.status}`;
+      throw new TypeletsApiError(res.status, message, json);
+    }
+    return json as T;
+  }
+
   return {
     get: (path) => request('GET', path),
     post: (path, body) => request('POST', path, body),
     put: (path, body) => request('PUT', path, body),
     patch: (path, body) => request('PATCH', path, body),
     delete: (path) => request('DELETE', path),
+    uploadBinary: (workspaceId, filePath, bytes, mimeType) =>
+      uploadBinary(workspaceId, filePath, bytes, mimeType),
   };
 }

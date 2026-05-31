@@ -24,17 +24,24 @@ const apiUrlSchema = z
   .default('https://api.typelets.com');
 
 /**
- * Which tool surface to expose. `interviewer` (default) sees rubric +
- * hidden test content. `candidate` strips it out so an AI assistant
- * helping a candidate can not be fed the answer key. The profile is
- * fixed at start-up; the server refuses to switch it at runtime.
+ * Which tool surface to expose:
+ *  - `interviewer` (default): full surface; sees rubric + hidden test content.
+ *  - `candidate`: strips answer-key content and withholds workspace lifecycle
+ *    + interview-authoring tools, so an AI assistant helping a candidate can
+ *    not be fed the answer key or reshape the interview.
+ *  - `general`: for using Typelets as a hosted dev/workspace product rather
+ *    than for interviews — full authoring (workspace lifecycle + file/folder
+ *    CRUD + reads) but none of the interview machinery.
+ * The profile is fixed at start-up; the server refuses to switch it at runtime.
  */
-const profileSchema = z.enum(['interviewer', 'candidate']).default('interviewer');
+const profileSchema = z
+  .enum(['interviewer', 'candidate', 'general'])
+  .default('interviewer');
 
 export interface Env {
   token: string;
   apiUrl: string;
-  profile: 'interviewer' | 'candidate';
+  profile: 'interviewer' | 'candidate' | 'general';
 }
 
 export function readEnv(): Env {

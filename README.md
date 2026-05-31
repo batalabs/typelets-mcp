@@ -28,12 +28,13 @@ Why not session cookies: cookies are scoped to a browser and expire on the platf
 
 The PAT issuance flow is the only prerequisite work on the Typelets side. Everything else in this repo just wraps existing endpoints.
 
-## Two profiles
+## Profiles
 
-The server ships two profiles:
+The server ships three profiles:
 
 - **`interviewer`** (default): has access to rubric content, hidden tests, scores, and the full library.
-- **`candidate`** (strict): hides rubric / hidden tests / scores even if the user's role would otherwise allow it. Useful when the user wants to point an AI assistant at their own in-progress interview without leaking the answer key into the LLM's context.
+- **`general`**: for using Typelets as a hosted dev/workspace product rather than for interviews. Full authoring — workspace lifecycle (create/delete), file/folder CRUD, and reads — but none of the interview tooling (no problem authoring, no recording analysis or rubric scoring). Any problem content it reads is stripped of rubric / criteria / hidden tests / solution.
+- **`candidate`** (strict): hides rubric / hidden tests / scores even if the user's role would otherwise allow it, and additionally withholds workspace lifecycle + problem tooling. Useful when the user wants to point an AI assistant at their own in-progress interview without leaking the answer key into the LLM's context.
 
 The profile is set at start-up, not per-tool:
 
@@ -41,7 +42,7 @@ The profile is set at start-up, not per-tool:
 TYPELETS_PROFILE=candidate npx @typelets/mcp
 ```
 
-Default is `interviewer`. The server refuses to switch profiles at runtime. If you want both, run two server instances on different ports.
+Default is `interviewer`. The server refuses to switch profiles at runtime. If you want more than one, run a server instance per profile.
 
 ## Install
 
@@ -71,11 +72,12 @@ Get your token at https://typelets.com: User Settings → Tokens → New token. 
 
 Profiles:
 - `interviewer` (default): full surface, including rubric and hidden tests.
-- `candidate`: the same tools but rubric, criteria, hidden tests, and solution are stripped before they reach the LLM. Use this when you want an AI assistant helping you on a problem you're solving.
+- `general`: workspace lifecycle + file/folder CRUD + reads; no interview tooling. Use this when you're using Typelets as a hosted dev/workspace product.
+- `candidate`: file CRUD + reads only; rubric, criteria, hidden tests, and solution are stripped before they reach the LLM. Use this when you want an AI assistant helping you on a problem you're solving.
 
 ## Tool surface
 
-16 tools total. In `candidate` profile, the 5 interviewer-only tools are not registered; the candidate's host LLM does not see them in `listTools`.
+In `general` profile the interview-authoring + session-intelligence tools are not registered; in `candidate` profile those plus workspace lifecycle (create/delete) are withheld. In each case the host LLM does not see the withheld tools in `listTools`.
 
 ### Reads (8 tools, both profiles)
 
@@ -95,8 +97,11 @@ Profiles:
 | Tool | Writes | `destructive` |
 | --- | --- | --- |
 | `create_file` | `POST /workspaces/:id/files` | |
+| `upload_file` | `POST /workspaces/:id/files/binary` | |
 | `update_file` | `PUT /workspaces/:id/files/:fileId/content` | ✓ |
 | `delete_file` | `DELETE /workspaces/:id/files/:fileId` | ✓ |
+
+`upload_file` stores a base64-encoded **binary** file (image, font, PDF, asset) in object storage rather than the Yjs text doc — the path for assets a persistent workspace serves at its preview URL / custom domain. `create_file`/`update_file` remain for UTF-8 text. Available in all profiles. Max 25 MiB.
 
 ### Writes: authoring (5 tools, interviewer profile only)
 
