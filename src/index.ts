@@ -26,7 +26,6 @@ import { registerGetProblem } from './tools/get_problem.js';
 import { registerListRecordings } from './tools/list_recordings.js';
 import { registerListPendingInvites } from './tools/list_pending_invites.js';
 import { registerCreateFile } from './tools/create_file.js';
-import { registerUploadFile } from './tools/upload_file.js';
 import { registerUpdateFile } from './tools/update_file.js';
 import { registerDeleteFile } from './tools/delete_file.js';
 import { registerCreateWorkspace } from './tools/create_workspace.js';
@@ -74,7 +73,6 @@ async function main(): Promise<void> {
 
   // Phase 2 write tools (profile-gated inside each register function).
   registerCreateFile(server, client, env);
-  registerUploadFile(server, client, env);
   registerUpdateFile(server, client, env);
   registerDeleteFile(server, client, env);
   registerCreateWorkspace(server, client, env);
