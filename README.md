@@ -97,8 +97,11 @@ In `general` profile the interview-authoring + session-intelligence tools are no
 | Tool | Writes | `destructive` |
 | --- | --- | --- |
 | `create_file` | `POST /workspaces/:id/files` | |
+| `upload_file` | `POST /workspaces/:id/files/binary` | |
 | `update_file` | `PUT /workspaces/:id/files/:fileId/content` | ✓ |
 | `delete_file` | `DELETE /workspaces/:id/files/:fileId` | ✓ |
+
+`upload_file` stores a base64-encoded **binary** file (image, font, PDF, asset) in object storage rather than the Yjs text doc — the path for assets a persistent workspace serves at its preview URL / custom domain. `create_file`/`update_file` remain for UTF-8 text. Available in all profiles. Max 25 MiB.
 
 ### Writes: authoring (5 tools, interviewer profile only)
 

@@ -21,9 +21,15 @@ describe('toolAllowedForProfile', () => {
     }
   });
 
-  it('allows per-file tools in candidate profile', () => {
-    for (const name of ['create_file', 'update_file', 'delete_file']) {
+  it('allows per-file tools (incl. upload_file) in candidate profile', () => {
+    for (const name of ['create_file', 'update_file', 'delete_file', 'upload_file']) {
       assert.equal(toolAllowedForProfile(name, 'candidate'), true);
+    }
+  });
+
+  it('allows upload_file in every profile', () => {
+    for (const profile of ['interviewer', 'candidate', 'general'] as const) {
+      assert.equal(toolAllowedForProfile('upload_file', profile), true);
     }
   });
 
