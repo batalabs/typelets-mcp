@@ -1,6 +1,6 @@
 {
   "name": "@typelets/mcp",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Model Context Protocol server for Typelets. Wraps the Typelets API as tools an MCP-capable LLM client can call.",
   "type": "module",
   "bin": {
