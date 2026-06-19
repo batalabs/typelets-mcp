@@ -2,6 +2,13 @@
 
 All notable changes to `@typelets/mcp` will be documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); the project follows [SemVer](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.1](https://github.com/batalabs/typelets-mcp/compare/mcp-v0.5.0...mcp-v0.5.1) (2026-06-19)
+
+
+### Bug Fixes
+
+* correct dead default API URL + add duplicate_problem tool ([#10](https://github.com/batalabs/typelets-mcp/issues/10)) ([dc5e034](https://github.com/batalabs/typelets-mcp/commit/dc5e0341b6ef5863068c3cb1076cf22b7fff7a2b))
+
 ## [0.5.0](https://github.com/batalabs/typelets-mcp/compare/mcp-v0.4.0...mcp-v0.5.0) (2026-05-31)
 
 
