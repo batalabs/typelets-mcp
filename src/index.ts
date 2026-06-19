@@ -13,6 +13,7 @@
  * interviewer-only tools are not registered when TYPELETS_PROFILE=candidate.
  * Phase 3 session-intelligence tools are also profile-gated at registration.
  */
+import { readFileSync } from 'node:fs';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { readEnv } from './env.js';
@@ -33,6 +34,7 @@ import { registerCreateWorkspace } from './tools/create_workspace.js';
 import { registerApplyProblemToWorkspace } from './tools/apply_problem_to_workspace.js';
 import { registerSaveProblemToLibrary } from './tools/save_problem_to_library.js';
 import { registerEditProblem } from './tools/edit_problem.js';
+import { registerDuplicateProblem } from './tools/duplicate_problem.js';
 import { registerDeleteProblem } from './tools/delete_problem.js';
 import { registerSummarizeRecording } from './tools/summarize_recording.js';
 import { registerScoreAgainstRubric } from './tools/score_against_rubric.js';
@@ -44,6 +46,12 @@ import { registerAppendToFile } from './tools/append_to_file.js';
 import { registerDeleteWorkspace } from './tools/delete_workspace.js';
 import { registerWhoami } from './tools/whoami.js';
 
+// Advertise the real package version (release-please bumps package.json), not a
+// hardcoded string that silently drifts.
+const pkg = JSON.parse(
+  readFileSync(new URL('../package.json', import.meta.url), 'utf8'),
+) as { version: string };
+
 async function main(): Promise<void> {
   const env = readEnv();
   const client = createClient(env);
@@ -51,7 +59,7 @@ async function main(): Promise<void> {
   const server = new McpServer(
     {
       name: 'typelets-mcp',
-      version: '0.0.1',
+      version: pkg.version,
     },
     {
       capabilities: {
@@ -81,6 +89,7 @@ async function main(): Promise<void> {
   registerApplyProblemToWorkspace(server, client, env);
   registerSaveProblemToLibrary(server, client, env);
   registerEditProblem(server, client, env);
+  registerDuplicateProblem(server, client, env);
   registerDeleteProblem(server, client, env);
 
   // Phase 3 session-intelligence tools (interviewer-only).

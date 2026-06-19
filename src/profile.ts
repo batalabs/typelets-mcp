@@ -45,6 +45,7 @@ const INTERVIEW_TOOLS: ReadonlySet<string> = new Set([
   'apply_problem_to_workspace',
   'save_problem_to_library',
   'edit_problem',
+  'duplicate_problem',
   'delete_problem',
   'summarize_recording',
   'score_against_rubric',

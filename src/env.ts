@@ -8,7 +8,7 @@
 import { z } from 'zod';
 
 /**
- * Personal Access Token issued at typelets.com/settings/tokens. Required.
+ * Personal Access Token issued at app.typelets.com/settings/tokens. Required.
  * Stored on disk only in the host client's MCP config; never leaves the
  * caller's machine.
  */
@@ -18,10 +18,11 @@ const tokenSchema = z.string().min(20, 'TYPELETS_TOKEN looks too short to be a r
  * API base URL. Defaults to production. Local development against a
  * self-hosted Typelets instance overrides this.
  */
-const apiUrlSchema = z
-  .string()
-  .url()
-  .default('https://api.typelets.com');
+// The production API is served at app.typelets.com/api. NOT api.typelets.com
+// (does not resolve) and NOT typelets.com/api (that is the marketing site since
+// the app cutover). A Cloudflare rule lets authenticated (Bearer) API requests
+// past Super Bot Fight Mode. Local dev overrides this via TYPELETS_API_URL.
+const apiUrlSchema = z.string().url().default('https://app.typelets.com/api');
 
 /**
  * Which tool surface to expose:

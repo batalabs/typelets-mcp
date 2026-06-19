@@ -20,7 +20,7 @@ Phase 1 is the entire v0.1.0 release. Phase 2 lands in v0.2.x. Phase 3 is v0.3.x
 
 ## How auth works
 
-The server authenticates against the Typelets API using a **Personal Access Token**. Tokens are issued in User Settings -> Tokens on https://typelets.com, are scoped per-user, and carry an expiry plus a label. Tokens never leave the user's machine. The MCP server reads `TYPELETS_TOKEN` from its environment, and the client passes it through.
+The server authenticates against the Typelets API using a **Personal Access Token**. Tokens are issued in User Settings -> Tokens on https://app.typelets.com, are scoped per-user, and carry an expiry plus a label. Tokens never leave the user's machine. The MCP server reads `TYPELETS_TOKEN` from its environment, and the client passes it through.
 
 Why not OAuth: this is a single-user CLI tool wired into a desktop LLM client. PATs match the audience without dragging in a browser dance every session. An OAuth flow becomes plausible later if a Typelets-hosted MCP gateway makes sense.
 
@@ -60,7 +60,7 @@ In your MCP client's config (Claude Desktop, Cline, Cursor, etc.):
       "args": ["@typelets/mcp"],
       "env": {
         "TYPELETS_TOKEN": "pat_…",
-        "TYPELETS_API_URL": "https://api.typelets.com",
+        "TYPELETS_API_URL": "https://app.typelets.com/api",
         "TYPELETS_PROFILE": "interviewer"
       }
     }
@@ -68,7 +68,7 @@ In your MCP client's config (Claude Desktop, Cline, Cursor, etc.):
 }
 ```
 
-Get your token at https://typelets.com: User Settings → Tokens → New token. Give it a label like "Claude Desktop on laptop", pick an expiry, copy the value (you only see it once), and paste it into `TYPELETS_TOKEN`.
+Get your token at https://app.typelets.com: User Settings → Tokens → New token. Give it a label like "Claude Desktop on laptop", pick an expiry, copy the value (you only see it once), and paste it into `TYPELETS_TOKEN`.
 
 Profiles:
 - `interviewer` (default): full surface, including rubric and hidden tests.
