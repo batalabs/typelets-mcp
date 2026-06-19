@@ -18,10 +18,11 @@ const tokenSchema = z.string().min(20, 'TYPELETS_TOKEN looks too short to be a r
  * API base URL. Defaults to production. Local development against a
  * self-hosted Typelets instance overrides this.
  */
-// The production API is served at typelets.com/api (NOT api.typelets.com, which
-// does not exist). Local development against a self-hosted instance overrides
-// this via TYPELETS_API_URL.
-const apiUrlSchema = z.string().url().default('https://typelets.com/api');
+// The production API is served at app.typelets.com/api. NOT api.typelets.com
+// (does not resolve) and NOT typelets.com/api (that is the marketing site since
+// the app cutover). A Cloudflare rule lets authenticated (Bearer) API requests
+// past Super Bot Fight Mode. Local dev overrides this via TYPELETS_API_URL.
+const apiUrlSchema = z.string().url().default('https://app.typelets.com/api');
 
 /**
  * Which tool surface to expose:

@@ -60,7 +60,7 @@ In your MCP client's config (Claude Desktop, Cline, Cursor, etc.):
       "args": ["@typelets/mcp"],
       "env": {
         "TYPELETS_TOKEN": "pat_…",
-        "TYPELETS_API_URL": "https://typelets.com/api",
+        "TYPELETS_API_URL": "https://app.typelets.com/api",
         "TYPELETS_PROFILE": "interviewer"
       }
     }
